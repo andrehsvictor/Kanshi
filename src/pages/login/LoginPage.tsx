@@ -3,11 +3,23 @@ import bg from "../../assets/bg.jpg";
 import Overlay from "./components/Overlay";
 import GradientOverlay from "./components/GradientOverlay";
 import LoginForm from "./components/LoginForm";
+import useLogin from "../../hooks/useLogin";
+import ErrorMessage from "../../components/ErrorMessage";
+import { useState } from "react";
 
 const LoginPage = () => {
+  const { login } = useLogin();
+  const [error, setError] = useState<string | null>(null);
+  const [isErrorMessageVisible, setIsErrorMessageVisible] = useState(false);
 
-  const handleLogin = (email: string, password: string) => {
-    console.log(email, password);
+  const handleLogin = async (email: string, password: string) => {
+    const response = await login(email, password);
+    if (response.success) {
+      alert("Login successful");
+    } else {
+      setError(response.message || "An error occurred");
+      setIsErrorMessageVisible(true);
+    }
   };
 
   return (
@@ -30,6 +42,11 @@ const LoginPage = () => {
           About
         </a>
       </div>
+      <ErrorMessage
+        open={isErrorMessageVisible}
+        message={error || ""}
+        onDismiss={() => setIsErrorMessageVisible(false)}
+      />
     </>
   );
 };
