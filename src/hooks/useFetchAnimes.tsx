@@ -21,7 +21,7 @@ const useFetchAnimes = () => {
             },
           }
         );
-        if (response.status === 403) {
+        if (response.status === 401) {
           localStorage.removeItem("Kanshi: bearer_token");
           localStorage.removeItem("Kanshi: expires_at");
           alert("Your session has expired. Please log in again.");
