@@ -1,6 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import LoginPage from "./pages/login/LoginPage";
-import ErrorPage from "./pages/notFound/NotFoundPage";
+import LoginPage from "./pages/login";
+import ErrorPage from "./pages/notFound";
+import HomePage from "./pages/home";
 
 export default function Router() {
   return (
@@ -9,7 +10,7 @@ export default function Router() {
         <Route path="/">
           <Route index element={<LoginPage />} />
           <Route path="login" element={<LoginPage />} />
-          <Route path="home" element={<h1>Home page</h1>} />
+          <Route path="home" element={<HomePage />} />
         </Route>
         <Route path="*" element={<ErrorPage />} />
       </Routes>
