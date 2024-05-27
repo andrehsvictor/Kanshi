@@ -20,7 +20,10 @@ export default function AnimeCard({ anime, onAnimeClick }: AnimeCardProps) {
           <a
             href="#"
             className="text-fuchsia-700 font-bold"
-            onClick={() => onAnimeClick(anime)}
+            onClick={(e) => {
+              e.preventDefault();
+              onAnimeClick(anime);
+            }}
           >
             Read more
           </a>
