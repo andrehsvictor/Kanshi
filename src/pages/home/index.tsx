@@ -2,6 +2,7 @@ import { useState } from "react";
 import useFetchAnimes from "../../hooks/useFetchAnimes";
 import NavBar from "./components/NavBar";
 import AnimeCard from "./components/AnimeCard";
+import { useNavigate } from "react-router-dom";
 
 export default function HomePage() {
   const { animes, loading, success } = useFetchAnimes();
@@ -9,11 +10,15 @@ export default function HomePage() {
   const filteredAnimes = animes.filter((anime) =>
     anime.title.toLowerCase().includes(search.toLowerCase())
   );
+  const navigate = useNavigate();
 
   const renderAnimes = () => {
     const animesToRender = search.length > 0 ? filteredAnimes : animes;
     return animesToRender.map((anime) => (
-      <AnimeCard anime={anime} onAnimeClick={(anime) => alert(anime.id)} />
+      <AnimeCard
+        anime={anime}
+        onAnimeClick={(anime) => navigate(`/anime/${anime.id}`)}
+      />
     ));
   };
 
