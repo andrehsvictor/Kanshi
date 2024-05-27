@@ -13,10 +13,12 @@ const useLogin = () => {
       if (request.ok) {
         const response = await request.json();
         localStorage.setItem("Kanshi: bearer_token", response.token);
+        localStorage.setItem("Kanshi: expires_at", response.expiresAt);
         return { success: true };
+      } else if (request.status === 401) {
+        return { success: false, message: "Invalid credentials" };
       } else {
-        const error = await request.json();
-        return { success: false, message: error.message };
+        return { success: false, message: "An error occurred" };
       }
     } catch (error) {
       return { success: false };
