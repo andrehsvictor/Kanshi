@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres
+    env_file: .env
+    ports:
+      - 5432:5432
+    restart: on-failure
+    networks:
+      - kanshi-network
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TZ}
+  api:
+    image: andrehsvictor/kanshi-api
+    env_file: .env
+    ports:
+      - 8080:8080
+    restart: on-failure
+    networks:
+      - kanshi-network
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${POSTGRES_DB}
+      SPRING_DATASOURCE_USERNAME: ${POSTGRES_USER}
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD}
+      TZ: ${TZ}
+  web:
+    image: andrehsvictor/kanshi-web
+    env_file: .env
+    ports:
+      - 80:80
+    restart: on-failure
+    networks:
+      - kanshi-network
+    depends_on:
+      - api
+    environment:
+      VITE_API_URL: http://api:8080
+      TZ: ${TZ}
+networks:
+  kanshi-network:
+    name: kanshi-network
+    driver: bridge
